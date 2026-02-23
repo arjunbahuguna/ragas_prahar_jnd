@@ -15,17 +15,17 @@ Indian raga theory assigns specific ragas to particular praharas (time‑of‑da
 - **H1a (time‑of‑day effect)**: Mean pitch JND differs across praharas/time‑of‑day windows; that is, there is a systematic modulation of pitch discrimination acuity by time of day consistent with raga‑time theory (listeners are not equally sensitive to pitch in all praharas).
 - **H0a (time‑of‑day null)**: Mean pitch JND is the same across praharas/time‑of‑day windows; i.e., there is no reliable effect of time of day on pitch discrimination, once inter‑individual variability is accounted for.
 
-Formally, for participant \(i\) at time‑of‑day level \(t \in \{\text{Morning, Afternoon, Evening}\}\), let \(Y_{it}\) be the (log‑transformed) arithmetic‑mean JND:
+Formally, for participant $i$ at time‑of‑day level $t \in \{\text{Morning, Afternoon, Evening}\}$, let $Y_{it}$ be the (log‑transformed) arithmetic‑mean JND:
 
-- **H0a**: \(\mu_{\text{Morning}} = \mu_{\text{Afternoon}} = \mu_{\text{Evening}}\)
-- **H1a**: \(\exists\, t, t' : \mu_t \neq \mu_{t'}\)
+- **H0a**: $\mu_{\text{Morning}} = \mu_{\text{Afternoon}} = \mu_{\text{Evening}}$
+- **H1a**: $\exists\, t, t' : \mu_t \neq \mu_{t'}$
 
-where \(\mu_t\) denotes the population mean of \(\log(Y_{it})\) at time‑of‑day level \(t\).
+where $\mu_t$ denotes the population mean of $\log(Y_{it})$ at time‑of‑day level $t$.
 
-In addition, let \(c \in \{\text{Morning type, Night type, Depends}\}\) index chronotype groups, and \(\mu_{t,c}\) be the mean log‑JND for chronotype \(c\) at time‑of‑day level \(t\):
+In addition, let $c \in \{\text{Morning type, Night type, Depends}\}$ index chronotype groups, and $\mu_{t,c}$ be the mean log‑JND for chronotype $c$ at time‑of‑day level $t$:
 
 - **H1b (chronotype × time‑of‑day interaction)**: The time‑of‑day effect on JND depends on chronotype. For example, Morning‑type participants may show lower JNDs (better pitch discrimination) in the morning relative to evening, whereas Night‑type participants may be relatively sharper in the evening.
-- **H0b (no interaction)**: For all \(c\), the pattern of \(\mu_{t,c}\) across time‑of‑day levels is identical up to a constant offset; i.e., the difference in mean JND between praharas is the same for all chronotype groups.
+- **H0b (no interaction)**: For all $c$, the pattern of $\mu_{t,c}$ across time‑of‑day levels is identical up to a constant offset; i.e., the difference in mean JND between praharas is the same for all chronotype groups.
 
 The interaction hypothesis H1b will be tested in an extended ANOVA / mixed‑effects framework, conditional on having enough participants per chronotype group.
 
@@ -60,7 +60,7 @@ Before any inferential tests, the dataset will be cleaned and described in a way
   - Primary DV: **`Arithmetic Mean` JND (Hz)**, as the main psychoacoustic outcome of interest.
   - Secondary DV for robustness checks: `Geometric Mean` JND.
   - Due to the very large range and right‑skew of JND values (including clear outliers), apply a log transform:
-    - \(Y = \log_{10}(\text{JND})\) or \(Y = \ln(\text{JND})\).
+    - $Y = \log_{10}(\text{JND})$ or $Y = \ln(\text{JND})$.
   - Inspect histograms and Q–Q plots of raw vs. log‑transformed JND to verify improved normality.
 
 - **Step 5 – Descriptive statistics**
@@ -90,15 +90,15 @@ Given that most participants were measured repeatedly across the three time‑of
 
 - **Statistical model (mixed‑effects formulation)**:
 
-  \[
+  $$
   Y_{it} = \beta_0 + b_i + \beta_{\text{TimeOfDay}(t)} + \epsilon_{it},
-  \]
+  $$
 
   where:
-  - \(Y_{it}\) is log‑JND for participant \(i\) at time‑of‑day level \(t\),
-  - \(b_i \sim \mathcal{N}(0, \sigma_b^2)\) is a random intercept for participant \(i\),
-  - \(\epsilon_{it} \sim \mathcal{N}(0, \sigma^2)\) is residual error,
-  - \(\beta_{\text{TimeOfDay}(t)}\) captures the fixed effect of time of day (with one level as reference).
+  - $Y_{it}$ is log‑JND for participant $i$ at time‑of‑day level $t$,
+  - $b_i \sim \mathcal{N}(0, \sigma_b^2)$ is a random intercept for participant $i$,
+  - $\epsilon_{it} \sim \mathcal{N}(0, \sigma^2)$ is residual error,
+  - $\beta_{\text{TimeOfDay}(t)}$ captures the fixed effect of time of day (with one level as reference).
 
 - **Hypothesis test**:
   - Test the omnibus effect of `TimeOfDay`:
@@ -122,11 +122,11 @@ To connect more closely to individual differences that might align with raga‑t
 
 - **Model**:
 
-  \[
+  $$
   Y_{it} = \beta_0 + b_i + \beta_{\text{TimeOfDay}(t)} + \beta_{\text{Chronotype}(i)} + \beta_{\text{TimeOfDay} \times \text{Chronotype}} + \gamma_1 \text{Volume}_{it} + \gamma_2 \text{NoiseExposure}_{it} + \epsilon_{it},
-  \]
+  $$
 
-  where \(b_i\) is a random intercept for participant \(i\).
+  where $b_i$ is a random intercept for participant $i$.
 
 - **Hypothesis tests**:
   - Main effect of `TimeOfDay` (as above).
