@@ -38,6 +38,32 @@ df = df.dropna(subset=["JND_arith", "JND_geo"])
 df = df[~df["Name"].fillna("").eq("Name")]
 df = df[~df["JND_arith"].astype(str).str.contains("#ERROR!", na=False)]
 
+# -----------------------------------------------------------------
+# 1b. Standardise participant names to first-name-only
+# -----------------------------------------------------------------
+name_map = {
+    "Oriol Freixa Dachs": "Oriol",
+    "Ariana Pereira": "Ariana",
+    "Anna Dachs Casafont": "Anna",
+    "Josep Freixa Guitart": "Josep",
+    "Carlos Pereira": "Carlos",
+    "Carlos pereira": "Carlos",
+    "Avina Pereira": "Avina",
+    "Avina Pereira ": "Avina",
+    "Inés Broto Clemente": "Inés",
+    "Inés": "Inés",
+    "Hemanth Ramia Jegdish": "Hemanth",
+    "Federico De Lellis": "Federico",
+    "Yuhang Wu": "Yuhang",
+    "Victoria ": "Victoria",
+    "Marla ": "Marla",
+    "Jessica ": "Jessica",
+    "Jenny ": "Jenny",
+    "Rafael ": "Rafael",
+    "Fernando ": "Fernando",
+}
+df["Name"] = df["Name"].str.strip().replace(name_map)
+
 
 def to_num(x):
     if pd.isna(x):
@@ -51,6 +77,23 @@ def to_num(x):
 
 df["JND_arith"] = df["JND_arith"].apply(to_num)
 df["JND_geo"] = df["JND_geo"].apply(to_num)
+
+# -----------------------------------------------------------------
+# 1c. Remove outliers using 1.5×IQR rule on both JND columns
+# -----------------------------------------------------------------
+def iqr_mask(series: pd.Series) -> pd.Series:
+    """Return a boolean mask that is True for non-outlier rows."""
+    Q1 = series.quantile(0.25)
+    Q3 = series.quantile(0.75)
+    IQR = Q3 - Q1
+    return (series >= Q1 - 1.5 * IQR) & (series <= Q3 + 1.5 * IQR)
+
+n_before = len(df)
+mask_arith = iqr_mask(df["JND_arith"].dropna()).reindex(df.index, fill_value=True)
+mask_geo = iqr_mask(df["JND_geo"].dropna()).reindex(df.index, fill_value=True)
+df = df[mask_arith & mask_geo].copy()
+print(f"Outlier removal (1.5×IQR): {n_before} → {len(df)} rows "
+      f"({n_before - len(df)} removed)")
 
 
 def to_volume(x):
